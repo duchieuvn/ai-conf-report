@@ -1,0 +1,131 @@
+% instead of amberg, the option weiden oder amwen can be given. This changes the title backround
+% lecture argument adds the subtitle to the footline
+% other formats possible, e.g. aspectratio=43 or aspectration=169
+\documentclass[aspectratio=169, lecture, amberg]{OTHAWbeamer}
+\let\Tiny=\tiny
+
+\usepackage{etex}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman, english]{babel}
+\usepackage[
+backend=biber,
+style=ieee,
+sorting=none
+]{biblatex}
+
+\title[Kurztitel]{LateX Beamer Presentation Title}
+\subtitle{Subtitle}
+\author[Mustermann]{Firstname Surename}
+\place{Location}
+\date{{\selectlanguage{english}\today}}
+
+\addbibresource{literature.bib}
+
+\begin{document}
+\maketitle
+
+\frame{
+\frametitle{Table of Content / Outline}
+\tableofcontents
+}
+
+\section{First Section}
+
+\begin{frame}
+\frametitle{Headline}
+\framesubtitle{Itemize}
+\begin{itemize}
+\item<1-> Item 1
+\item<2-> Item 2
+\begin{itemize}
+\item Content 1 
+\item Content 2
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Subsection 1}
+
+\begin{frame}
+\frametitle{Headline}
+\framesubtitle{Enumerate}
+\begin{enumerate}
+\item Enum 1
+\pause
+\item Enum 2
+\end{enumerate}
+\end{frame}
+
+\subsection{Subsection 2}
+
+\begin{frame}
+\frametitle{Headline}
+\framesubtitle{Block}
+\begin{block}{Block}
+Content Block.
+\end{block}
+\end{frame}
+
+\section{Second Section}
+
+\begin{frame}
+\frametitle{OTH-AW}
+\framesubtitle{Figure Campus Amberg \& Weiden}
+\begin{figure}
+\includegraphics[height=60mm, width=120mm]{images/amberg-titel.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Columns}
+\framesubtitle{Double Column}
+\vspace*{0.4cm}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\structure{Prof. Dr.-Ing. Christian Bergler}
+\vspace*{0.2cm}
+\begin{itemize}
+\item Professor at the OTH Amberg-Weiden, Faculty of Electrical Engineering, Media and Computer Science
+\vspace*{0.1cm}
+\item Field of Teaching: \structure{Artificial Intelligence, with Focus on Deep Learning}
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\structure{General Information}
+\vspace*{0.cm}
+\begin{itemize}
+\item E-Mail: c.bergler@oth-aw.de
+\vspace*{0.1cm}
+\item Office Hours: Upon Request
+\vspace*{0.1cm}
+\item Internal/External Theses (Bachelor's/Master's) and AI-Projects possible at any time
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Citation}
+\framesubtitle{How to Cite}
+\begin{center}
+Insert Citation Here \cite{BerglerOSPOT:2019}\\
+Another one \cite{BerglerAnimalSpot:2022}\\
+Multiple Citations \cite{BerglerFIN:2021, BerglerWHISPER:2022, BerglerOCLEAN:2020, BerglerSlang:2021, BerglerGraz:2019, BerglerLjub:2019, BerglerPARTY:2022}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{The End}
+\begin{center}
+\scalebox{2}{Further Questions?}
+\end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Literature References}
+\printbibliography
+\end{frame}
+
+\end{document}
+
