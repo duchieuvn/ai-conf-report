@@ -15,10 +15,11 @@ style=ieee,
 sorting=none
 ]{biblatex}
 
-\title[Paper Presentation]{Paper Presentation}
-\subtitle{He wants to present a paper.}
-\author[Presenter]{Firstname Surname}
-\place{Location}
+\title[Action Spotting with UGL]
+{Unifying Global and Local Scene Entities Modelling for Precise Action Spotting}
+\subtitle{--}
+\author[Presenter]{Hieu Tran}
+\place{Amberg}
 \date{{\selectlanguage{english}\today}}
 
 \addbibresource{literature.bib}
@@ -31,51 +32,368 @@ sorting=none
 \tableofcontents
 }
 
-\section{First Section}
+\section{Introduction}
 
 \begin{frame}
-\frametitle{Headline}
-\framesubtitle{Itemize}
+\frametitle{Action Spotting in Sports}
+\framesubtitle{Task Overview}
 \begin{itemize}
-\item<1-> Item 1
-\item<2-> Item 2
-\begin{itemize}
-\item Content 1 
-\item Content 2
-\end{itemize}
+\item<1-> \structure{Domain}: Action spotting in sports videos (soccer, diving, gymnastics)
+\item<2-> \structure{Goal}: Detect \textit{precise timestamps} of events, not long temporal segments
+\item<3-> \structure{Applications}: 
+	\begin{itemize}
+	\item Highlight generation
+	\item Video analytics and broadcasting automation
+	\item Downstream temporal retrieval
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
-\subsection{Subsection 1}
+\begin{frame}
+\frametitle{Limitations of Prior Work}
+\framesubtitle{Motivation for UGL}
+\begin{itemize}
+\item<1-> Standard pipelines rely on \structure{global frame features} only
+\item<2-> Current methods behave as black boxes, missing small but critical entities
+\item<3-> Two-phase approaches: heavy 3D backbones, multiple extractors
+\item<4-> End-to-end methods (e.g., E2E-Spot): lighter but still global-only
+\item<5-> \alert{Need}: explicit modeling of both global and local scene elements
+\end{itemize}
+\end{frame}
+
+\section{Method: UGL Architecture}
+
+\subsection{Global Environment Feature}
+
 
 \begin{frame}
-\frametitle{Headline}
-\framesubtitle{Enumerate}
+\frametitle{UGL Architecture}
+\framesubtitle{Global Environment Feature}
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{images/architect.png}
+\end{frame}
+
+
+\subsection{Global Environment Feature}
+
+\begin{frame}
+\frametitle{UGL Architecture}
+\framesubtitle{Global Environment Feature}
+\begin{itemize}
+\item<1-> \structure{Backbone}: RegNet-Y (efficient 2D CNN design)
+\item<2-> \structure{Temporal Integration}: Gate-Shift Module (GSM)
+	\begin{itemize}
+	\item Shifts feature maps forward and backward along temporal axis
+	\item Shares information across frames
+	\item Lightweight alternative to 3D CNNs
+	\end{itemize}
+
+\item<3-> \structure{Output}: Global environment feature vector per frame capturing spatial and short-term temporal context
+\end{itemize}
+\includegraphics[height=3.5cm]{images/architect.png}
+\end{frame}
+
+\subsection{Local Scene Entities}
+
+\begin{frame}
+\frametitle{UGL Architecture}
+\framesubtitle{Local Scene Entities with GLIP}
+\begin{block}{Why GLIP?}
+Global features alone often ignore small but crucial entities (cards, ball, etc.), especially under class imbalance
+\end{block}
+
+\begin{itemize}
+\item \structure{GLIP}: Grounded Language-Image Pre-training (training-free detector)
+\item \structure{Input}: Frame image + text prompt listing sports entities
+	\begin{itemize}
+	\item \textit{``ball, yellow card, red card, referee, \ldots''}
+	\end{itemize}
+\item \structure{Mechanism}: 
+	\begin{itemize}
+	\item Language encoder processes text (BERT)
+	\item Visual encoder produces image proposals (Swin backbone)
+	\item Cross-modal multi-head attention aligns proposals with textual entities
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Adaptive Attention Mechanism (AAM)}
+\framesubtitle{Selecting Relevant Entities}
+\begin{block}{Problem}
+Not all detected entities are equally relevant for the current action
+\end{block}
+
+\begin{block}{AAM Solution}
+Takes both local entity features and global environment feature:
 \begin{enumerate}
-\item Enum 1
-\pause
-\item Enum 2
+\item \structure{Hard attention}: Select most promising entities
+\item \structure{Soft self-attention}: Fuse them into single compact representation
 \end{enumerate}
-\end{frame}
+\end{block}
 
-\subsection{Subsection 2}
-
-\begin{frame}
-\frametitle{Headline}
-\framesubtitle{Block}
-\begin{block}{Block}
-Content Block.
+\begin{block}{Output}
+\structure{Local relevant scene entities feature} emphasizing objects crucial for the action
 \end{block}
 \end{frame}
 
-\section{Second Section}
+\begin{frame}
+\frametitle{Fusion of Global and Local}
+\framesubtitle{Unified Representation}
+\includegraphics[height=6cm]{images/fusion.png}
+\end{frame}
 
 \begin{frame}
-\frametitle{OTH-AW}
-\framesubtitle{Figure Campus Amberg \& Weiden}
-\begin{figure}
-\includegraphics[height=60mm, width=120mm]{images/amberg-titel.png}
-\end{figure}
+\frametitle{Fusion of Global and Local}
+\framesubtitle{Unified Representation}
+\begin{enumerate}
+\item<1-> \structure{Concatenate}:
+	\begin{itemize}
+	\item Global environment feature
+	\item Local relevant entities feature
+	\end{itemize}
+\item<2-> \structure{Apply}:
+	\begin{itemize}
+	\item Self-attention layer to model interactions
+	\item Average pooling for compactness
+	\end{itemize}
+\item<3-> \structure{Output}: Unified entities and environment representation per frame capturing both background context and key object semantics
+\end{enumerate}
+\includegraphics[height=6cm]{images/fusion.png}
+\end{frame}
+
+\subsection{Temporal Reasoning}
+
+\begin{frame}
+\frametitle{Long-Term Temporal Reasoning (LTR)}
+\framesubtitle{Temporal Encoder \& Inference}
+\begin{block}{Temporal Modeling}
+\begin{itemize}
+\item Input: Sequence of fused frame features for $T$-frame snippet
+\item Model: 1-layer bidirectional GRU capturing semantic relationships
+\item Prediction: Per-frame class scores via fully connected + softmax
+\end{itemize}
+\end{block}
+
+\begin{block}{Inference with Sliding Window}
+\begin{itemize}
+\item Slide window over entire video with overlap
+\item Merge frame-wise scores from GRU for each snippet
+\item Apply Non-Maximum Suppression (NMS) in time
+\item Output: Temporally precise event spots
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\section{Datasets \& Task Definition}
+
+\begin{frame}
+\frametitle{Action Spotting Task}
+\framesubtitle{Formal Definition}
+\begin{block}{Input}
+An untrimmed sports video and a set of action classes
+\end{block}
+
+\begin{block}{Output}
+A \textit{sparse} set of timestamps $\{(t_i, a_i)\}$, each with an action label, indicating when an event occurs
+\end{block}
+
+\begin{block}{Evaluation}
+Mean AP over temporal tolerances, including tight tolerances (1--5 seconds) to measure precise spotting
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Benchmark Datasets}
+\framesubtitle{Three Sports Domains}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\structure{SoccerNet-v2}
+\begin{itemize}
+\item $\sim$550 matches
+\item $\sim$764 hours of video
+\item $>$300k labeled spots
+\item Strong clutter, camera changes
+\end{itemize}
+
+\structure{FineDiving}
+\begin{itemize}
+\item 3,000 diving clips
+\item Phase transitions (entry, twist, etc.)
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\structure{FineGym}
+\begin{itemize}
+\item 5,374 gym performances
+\item 32 spotting classes
+\item Converted from action segments to timestamps
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\section{Training \& Evaluation}
+
+\begin{frame}
+\frametitle{Addressing Class Imbalance}
+\framesubtitle{Focal Loss for Long-Tail Classes}
+\begin{block}{The Problem}
+In SoccerNet-v2: background frames dominate; non-background classes $\approx 2\%$ of frames
+\end{block}
+
+\begin{block}{Solution: Focal Loss}
+\begin{itemize}
+\item Down-weights easy examples with high predicted probability
+\item Focuses learning on hard, misclassified, or minority-class examples
+\item Includes balancing parameter for class weighting
+\item Applied per frame over predicted multi-class outputs
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Training Implementation Details}
+\framesubtitle{Architecture \& Data Setup}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\structure{Architecture}
+\begin{itemize}
+\item RegNet-Y (ImageNet-1K init)
+\item GLIP-L (Swin-Large, no fine-tuning)
+\item Bidirectional GRU
+\end{itemize}
+
+\structure{Snippets}
+\begin{itemize}
+\item Randomly sampled 100 frames
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\structure{Data Augmentation}
+\begin{itemize}
+\item Cropping, jittering, mixup
+\item Resize to height 224
+\end{itemize}
+
+\structure{Optimization}
+\begin{itemize}
+\item AdamW optimizer
+\item Linear warm-up + cosine scheduling
+\item Single A100 80GB GPU
+\item 50--150 epochs per dataset
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\subsection{Evaluation Metrics}
+
+\begin{frame}
+\frametitle{Evaluation Metrics}
+\framesubtitle{Multiple Precision Measures}
+\begin{block}{mAP}
+Mean Average Precision per class at fixed temporal tolerance
+\end{block}
+
+\begin{block}{Average-mAP (A-mAP)}
+Area under mAP vs tolerance curve across range of tolerances
+\end{block}
+
+\begin{block}{Tight Average-mAP (T-mAP)}
+Focuses on tight tolerances from 1 to 5 seconds, better reflects precise spotting capability
+\end{block}
+\end{frame}
+
+\section{Results}
+
+\begin{frame}
+\frametitle{SoccerNet-v2 Challenge}
+\framesubtitle{Top-1 Performance}
+\begin{block}{UGL Leaderboard Performance}
+\begin{itemize}
+\item \structure{\textbf{69.38\% T-mAP}} --- \textbf{Top-1 rank}
+\end{itemize}
+\end{block}
+
+\begin{block}{Improvements over Key Baselines}
+\begin{itemize}
+\item vs.\ E2E-Spot: $+2.65\%$ T-mAP
+\item vs.\ Baidu (two-phase): $+19.82\%$ T-mAP
+\item vs.\ Soares (two-phase): $+1.57\%$ T-mAP
+\end{itemize}
+\end{block}
+
+\begin{block}{Strong on Shown Actions}
+Large gains especially on events visible in frame; two-phase SOTA retains slight advantage only on unshown events
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Results on FineDiving \& FineGym}
+\framesubtitle{Consistent Improvements}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\structure{FineDiving}
+\begin{itemize}
+\item UGL consistently outperforms baselines
+\item vs.\ E2E-Spot (no optical flow):
+\item $+2.4\%$ mAP at selected tolerances
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\structure{FineGym}
+\begin{itemize}
+\item UGL consistently outperforms baselines
+\item vs.\ E2E-Spot (no optical flow):
+\item $+1.3\%$ mAP improvement
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace*{0.3cm}
+\begin{block}{Across Setup Variants}
+All comparisons: pre-trained features, fine-tuned features, VC-Spot baseline, and E2E-Spot
+\end{block}
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}
+\frametitle{Ablation Studies}
+\framesubtitle{Component Contributions}
+\begin{block}{Temporal Encoder \& Loss}
+\begin{itemize}
+\item GRU outperforms Transformer encoder with both cross-entropy and focal loss
+\item Focal Loss consistently beats cross-entropy, especially on long-tail classes
+\end{itemize}
+\end{block}
+
+\begin{block}{Local Entities \& Fusion}
+\begin{itemize}
+\item Fused feature (global + local via UGL) yields higher T-mAP than global-only
+\item Noticeable improvements on long-tail: penalty, red card, yellow-to-red
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Interpretability}
+\framesubtitle{Understanding the Model's Decisions}
+\begin{block}{Explicit Entity Modeling Enables}
+\begin{itemize}
+\item Highlight which objects (ball, card, player) drive a detection
+\item More interpretable reasoning vs.\ global black-box CNN + RNN
+\end{itemize}
+\end{block}
+
+\begin{block}{Visualizations in Paper}
+\begin{itemize}
+\item Detection boxes showing GLIP outputs
+\item Attention maps focusing on relevant entities during events
+\end{itemize}
+\end{block}
 \end{frame}
 
 \begin{frame}
@@ -84,7 +402,7 @@ Content Block.
 \vspace*{0.4cm}
 \begin{columns}
 \begin{column}{0.5\textwidth}
-\structure{Prof. Dr.-Ing. Christian Bergler}
+\structure{Prof.~Dr.-Ing.~Christian Bergler}
 \vspace*{0.2cm}
 \begin{itemize}
 \item Professor at the OTH Amberg-Weiden, Faculty of Electrical Engineering, Media and Computer Science
@@ -107,13 +425,14 @@ Content Block.
 \end{frame}
 
 \begin{frame}
-\frametitle{Citation}
-\framesubtitle{How to Cite}
-\begin{center}
-Insert Citation Here \cite{BerglerOSPOT:2019}\\
-Another one \cite{BerglerAnimalSpot:2022}\\
-Multiple Citations \cite{BerglerFIN:2021, BerglerWHISPER:2022, BerglerOCLEAN:2020, BerglerSlang:2021, BerglerGraz:2019, BerglerLjub:2019, BerglerPARTY:2022}
-\end{center}
+\frametitle{Key References}
+\framesubtitle{Foundational Work}
+\begin{itemize}
+\item Action detection in sports videos: long-standing benchmarking problem
+\item GLIP-based vision-language grounding for weakly supervised object detection
+\item Gate-Shift Modules: efficient temporal modeling in 2D CNNs
+\item Focal Loss: addressing class imbalance in detection tasks
+\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -124,7 +443,7 @@ Multiple Citations \cite{BerglerFIN:2021, BerglerWHISPER:2022, BerglerOCLEAN:202
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Literature References}
-\printbibliography
+\printbibliography%
 \end{frame}
 
 \end{document}
