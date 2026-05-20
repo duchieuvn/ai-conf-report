@@ -14,4 +14,4 @@
   (similar to the image in UGL Achitecture)
 
 - Results:
-  Replace Result slides with custom tables only
+  Replace Result slides with a simple page of custom tables that show the final metrics only
