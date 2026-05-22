@@ -16,8 +16,8 @@ sorting=none
 ]{biblatex}
 
 \title[Action Spotting with UGL]
-{Unifying Global and Local Scene Entities Modelling for Precise Action Spotting}
-\subtitle{--}
+{Unifying Global and Local Features}
+\subtitle{A Modern Approach to Sports Video Analysis}
 \author[Presenter]{Hieu Tran}
 \place{Amberg}
 \date{{\selectlanguage{english}\today}}
@@ -28,14 +28,17 @@ sorting=none
 \maketitle
 
 \frame{
-\frametitle{Table of Content / Outline}
+\frametitle{\textbf{Table of Content}}
+\setcounter{tocdepth}{1}
+\setbeamerfont{section in toc}{series=\bfseries}
+\setbeamertemplate{section in toc}[sections numbered]
 \tableofcontents
 }
 
 \section{Introduction}
 
 \begin{frame}
-\frametitle{Action Spotting in Sports}
+\frametitle{Introduction}
 \framesubtitle{Task Overview}
 \begin{itemize}
 \item<1-> \structure{Domain}: Action spotting in sports videos (soccer, diving, gymnastics)
@@ -50,7 +53,7 @@ sorting=none
 \end{frame}
 
 \begin{frame}
-\frametitle{Limitations of Prior Work}
+\frametitle{Introduction}
 \framesubtitle{Motivation for UGL}
 \begin{itemize}
 \item<1-> Standard pipelines rely on \structure{global frame features} only
@@ -61,7 +64,7 @@ sorting=none
 \end{itemize}
 \end{frame}
 
-\section{Method: UGL Architecture}
+\section{UGL Architecture}
 
 \subsection{Global Environment Feature}
 
@@ -70,7 +73,7 @@ sorting=none
 \frametitle{UGL Architecture}
 \framesubtitle{Global Environment Feature}
 \centering
-\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{images/architect.png}
+\includegraphics[width=0.85\textwidth,height=6cm]{images/architect.png}
 \end{frame}
 
 
@@ -90,7 +93,7 @@ sorting=none
 
 \item<3-> \structure{Output}: Global environment feature vector per frame capturing spatial and short-term temporal context
 \end{itemize}
-\includegraphics[height=3.5cm]{images/architect.png}
+\includegraphics[height=5.5cm]{images/architect.png}
 \end{frame}
 
 \subsection{Local Scene Entities}
@@ -118,8 +121,8 @@ Global features alone often ignore small but crucial entities (cards, ball, etc.
 \end{frame}
 
 \begin{frame}
-\frametitle{Adaptive Attention Mechanism (AAM)}
-\framesubtitle{Selecting Relevant Entities}
+\frametitle{UGL Architecture}
+\framesubtitle{Adaptive Attention Mechanism (AAM)}
 \begin{block}{Problem}
 Not all detected entities are equally relevant for the current action
 \end{block}
@@ -138,14 +141,14 @@ Takes both local entity features and global environment feature:
 \end{frame}
 
 \begin{frame}
-\frametitle{Fusion of Global and Local}
-\framesubtitle{Unified Representation}
+\frametitle{UGL Architecture}
+\framesubtitle{Fusion of Global and Local}
 \includegraphics[height=6cm]{images/fusion.png}
 \end{frame}
 
 \begin{frame}
-\frametitle{Fusion of Global and Local}
-\framesubtitle{Unified Representation}
+\frametitle{UGL Architecture}
+\framesubtitle{Fusion of Global and Local}
 \begin{enumerate}
 \item<1-> \structure{Concatenate}:
 	\begin{itemize}
@@ -165,8 +168,15 @@ Takes both local entity features and global environment feature:
 \subsection{Temporal Reasoning}
 
 \begin{frame}
-\frametitle{Long-Term Temporal Reasoning (LTR)}
-\framesubtitle{Temporal Encoder \& Inference}
+\frametitle{UGL Architecture}
+\framesubtitle{Long-Term Temporal Reasoning (LTR)}
+\centering
+\includegraphics[width=0.85\textwidth,height=6cm]{images/ltr.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{UGL Architecture}
+\framesubtitle{Long-Term Temporal Reasoning (LTR)}
 \begin{block}{Temporal Modeling}
 \begin{itemize}
 \item Input: Sequence of fused frame features for $T$-frame snippet
@@ -186,23 +196,7 @@ Takes both local entity features and global environment feature:
 \end{frame}
 
 
-\section{Datasets \& Task Definition}
-
-\begin{frame}
-\frametitle{Action Spotting Task}
-\framesubtitle{Formal Definition}
-\begin{block}{Input}
-An untrimmed sports video and a set of action classes
-\end{block}
-
-\begin{block}{Output}
-A \textit{sparse} set of timestamps $\{(t_i, a_i)\}$, each with an action label, indicating when an event occurs
-\end{block}
-
-\begin{block}{Evaluation}
-Mean AP over temporal tolerances, including tight tolerances (1--5 seconds) to measure precise spotting
-\end{block}
-\end{frame}
+\section{Benchmark Datasets}
 
 \begin{frame}
 \frametitle{Benchmark Datasets}
@@ -234,11 +228,10 @@ Mean AP over temporal tolerances, including tight tolerances (1--5 seconds) to m
 \end{columns}
 \end{frame}
 
-\section{Training \& Evaluation}
 
 \begin{frame}
-\frametitle{Addressing Class Imbalance}
-\framesubtitle{Focal Loss for Long-Tail Classes}
+\frametitle{Benchmark Datasets}
+\framesubtitle{Addressing Class Imbalance}
 \begin{block}{The Problem}
 In SoccerNet-v2: background frames dominate; non-background classes $\approx 2\%$ of frames
 \end{block}
@@ -253,46 +246,13 @@ In SoccerNet-v2: background frames dominate; non-background classes $\approx 2\%
 \end{block}
 \end{frame}
 
-\begin{frame}
-\frametitle{Training Implementation Details}
-\framesubtitle{Architecture \& Data Setup}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\structure{Architecture}
-\begin{itemize}
-\item RegNet-Y (ImageNet-1K init)
-\item GLIP-L (Swin-Large, no fine-tuning)
-\item Bidirectional GRU
-\end{itemize}
 
-\structure{Snippets}
-\begin{itemize}
-\item Randomly sampled 100 frames
-\end{itemize}
-\end{column}
-\begin{column}{0.5\textwidth}
-\structure{Data Augmentation}
-\begin{itemize}
-\item Cropping, jittering, mixup
-\item Resize to height 224
-\end{itemize}
-
-\structure{Optimization}
-\begin{itemize}
-\item AdamW optimizer
-\item Linear warm-up + cosine scheduling
-\item Single A100 80GB GPU
-\item 50--150 epochs per dataset
-\end{itemize}
-\end{column}
-\end{columns}
-\end{frame}
-
+	\section{Quantitative Results}
 \subsection{Evaluation Metrics}
 
 \begin{frame}
-\frametitle{Evaluation Metrics}
-\framesubtitle{Multiple Precision Measures}
+\frametitle{Quantitative Results}
+\framesubtitle{Evaluation Metrics}
 \begin{block}{mAP}
 Mean Average Precision per class at fixed temporal tolerance
 \end{block}
@@ -306,143 +266,61 @@ Focuses on tight tolerances from 1 to 5 seconds, better reflects precise spottin
 \end{block}
 \end{frame}
 
-\section{Results}
 
+% --- Added frame with quantitative LaTeX tables (from paper-sumary.md section 9.3)
 \begin{frame}
-\frametitle{SoccerNet-v2 Challenge}
-\framesubtitle{Top-1 Performance}
-\begin{block}{UGL Leaderboard Performance}
-\begin{itemize}
-\item \structure{\textbf{69.38\% T-mAP}} --- \textbf{Top-1 rank}
-\end{itemize}
-\end{block}
+\frametitle{Quantitative Results (Tables)}
+\framesubtitle{SoccerNet-v2; FineDiving \& FineGym}
 
-\begin{block}{Improvements over Key Baselines}
-\begin{itemize}
-\item vs.\ E2E-Spot: $+2.65\%$ T-mAP
-\item vs.\ Baidu (two-phase): $+19.82\%$ T-mAP
-\item vs.\ Soares (two-phase): $+1.57\%$ T-mAP
-\end{itemize}
-\end{block}
+\begin{table}[ht]
+\centering
+\caption{SoccerNet-v2 challenge quantitative comparison (T-mAP).}
+\label{tab:soccernet_results}
+\begin{tabular}{lccc}
+\hline
+Method & T-mAP (\%) & Gap to UGL (\%) & Notes \\
+\hline
+UGL (ours) & 69.38 & 0.00 & Top-1 on challenge leaderboard \\
+E2E-Spot & 66.73 & -2.65 & End-to-end baseline \\
+Baidu (two-phase) & 49.56 & -19.82 & Computed from reported margin \\
+Soares (two-phase) & 67.81 & -1.57 & Computed from reported margin \\
+\hline
+\end{tabular}
+\end{table}
 
-\begin{block}{Strong on Shown Actions}
-Large gains especially on events visible in frame; two-phase SOTA retains slight advantage only on unshown events
-\end{block}
-\end{frame}
+\vspace{0.4cm}
 
-\begin{frame}
-\frametitle{Results on FineDiving \& FineGym}
-\framesubtitle{Consistent Improvements}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\structure{FineDiving}
-\begin{itemize}
-\item UGL consistently outperforms baselines
-\item vs.\ E2E-Spot (no optical flow):
-\item $+2.4\%$ mAP at selected tolerances
-\end{itemize}
-\end{column}
-\begin{column}{0.5\textwidth}
-\structure{FineGym}
-\begin{itemize}
-\item UGL consistently outperforms baselines
-\item vs.\ E2E-Spot (no optical flow):
-\item $+1.3\%$ mAP improvement
-\end{itemize}
-\end{column}
-\end{columns}
+\begin{table}[ht]
+\centering
+\caption{FineDiving and FineGym improvements of UGL over E2E-Spot (no optical flow).}
+\label{tab:finediving_finegym_results}
+\begin{tabular}{lcc}
+\hline
+Dataset & $\Delta$ mAP of UGL (\%) & Comment \\
+\hline
+FineDiving & +2.4 & At selected temporal tolerances \\
+FineGym & +1.3 & Consistent gain over baseline \\
+\hline
+\end{tabular}
+\end{table}
 
-\vspace*{0.3cm}
-\begin{block}{Across Setup Variants}
-All comparisons: pre-trained features, fine-tuned features, VC-Spot baseline, and E2E-Spot
-\end{block}
 \end{frame}
 
 \section{Conclusion}
 
 \begin{frame}
-\frametitle{Ablation Studies}
-\framesubtitle{Component Contributions}
-\begin{block}{Temporal Encoder \& Loss}
+\frametitle{Conclusion}
 \begin{itemize}
-\item GRU outperforms Transformer encoder with both cross-entropy and focal loss
-\item Focal Loss consistently beats cross-entropy, especially on long-tail classes
-\end{itemize}
-\end{block}
-
-\begin{block}{Local Entities \& Fusion}
-\begin{itemize}
-\item Fused feature (global + local via UGL) yields higher T-mAP than global-only
-\item Noticeable improvements on long-tail: penalty, red card, yellow-to-red
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Interpretability}
-\framesubtitle{Understanding the Model's Decisions}
-\begin{block}{Explicit Entity Modeling Enables}
-\begin{itemize}
-\item Highlight which objects (ball, card, player) drive a detection
-\item More interpretable reasoning vs.\ global black-box CNN + RNN
-\end{itemize}
-\end{block}
-
-\begin{block}{Visualizations in Paper}
-\begin{itemize}
-\item Detection boxes showing GLIP outputs
-\item Attention maps focusing on relevant entities during events
-\end{itemize}
-\end{block}
-\end{frame}
-
-\begin{frame}
-\frametitle{Columns}
-\framesubtitle{Double Column}
-\vspace*{0.4cm}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-\structure{Prof.~Dr.-Ing.~Christian Bergler}
-\vspace*{0.2cm}
-\begin{itemize}
-\item Professor at the OTH Amberg-Weiden, Faculty of Electrical Engineering, Media and Computer Science
-\vspace*{0.1cm}
-\item Field of Teaching: \structure{Artificial Intelligence, with Focus on Deep Learning}
-\end{itemize}
-\end{column}
-\begin{column}{0.5\textwidth}
-\structure{General Information}
-\vspace*{0.cm}
-\begin{itemize}
-\item E-Mail: c.bergler@oth-aw.de
-\vspace*{0.1cm}
-\item Office Hours: Upon Request
-\vspace*{0.1cm}
-\item Internal/External Theses (Bachelor's/Master's) and AI-Projects possible at any time
-\end{itemize}
-\end{column}
-\end{columns}
-\end{frame}
-
-\begin{frame}
-\frametitle{Key References}
-\framesubtitle{Foundational Work}
-\begin{itemize}
-\item Action detection in sports videos: long-standing benchmarking problem
-\item GLIP-based vision-language grounding for weakly supervised object detection
-\item Gate-Shift Modules: efficient temporal modeling in 2D CNNs
-\item Focal Loss: addressing class imbalance in detection tasks
+	\item UGL unifies global environment and local entity features to produce precise, interpretable per-frame representations
+	\item Top result on SoccerNet‑v2: \textbf{69.38\% T‑mAP} (Top‑1); +2.65\% vs E2E‑Spot
+	\item Consistent gains on FineDiving (+2.4\% mAP) and FineGym (+1.3\% mAP)
+	\item Adaptive Attention selects relevant entities; GRU + Focal Loss handles temporal reasoning and class imbalance effectively
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{The End}
-\begin{center}
-\scalebox{2}{Further Questions?}
-\end{center}
-\end{frame}
-
-\begin{frame}[allowframebreaks]{Literature References}
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\framesubtitle{Literature References}
 \printbibliography%
 \end{frame}
 

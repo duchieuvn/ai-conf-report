@@ -210,20 +210,54 @@ You can use the following Markdown as a script/slide basis for a 20‑minute tal
   - On **FineDiving**, UGL improves mAP by about **2.4%** at selected tolerances.
   - On **FineGym**, UGL improves mAP by about **1.3%**.[^1]
 
+### 9.3 Quantitative Results in LaTeX Tables
+
+\begin{table}[h]
+\centering
+\caption{SoccerNet-v2 challenge quantitative comparison (T-mAP).}
+\label{tab:soccernet_results}
+\begin{tabular}{lccc}
+\hline
+Method & T-mAP (\%) & Gap to UGL (\%) & Notes \\
+\hline
+UGL (ours) & 69.38 & 0.00 & Top-1 on challenge leaderboard \\
+E2E-Spot & 66.73 & -2.65 & End-to-end baseline \\
+Baidu (two-phase) & 49.56 & -19.82 & Computed from reported margin \\
+Soares (two-phase) & 67.81 & -1.57 & Computed from reported margin \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{FineDiving and FineGym improvements of UGL over E2E-Spot (no optical flow).}
+\label{tab:finediving_finegym_results}
+\begin{tabular}{lcc}
+\hline
+Dataset & $\Delta$ mAP of UGL (\%) & Comment \\
+\hline
+FineDiving & +2.4 & At selected temporal tolerances \\
+FineGym & +1.3 & Consistent gain over baseline \\
+\hline
+\end{tabular}
+\end{table}
+
 ---
 
-## 10. Ablation Studies
+## 10. Conclusion
 
-### 10.1 Effect of Temporal Encoder \& Loss
+### 10.1 Key Findings
 
-- When using **only global features**, GRU outperforms Transformer encoder under both cross-entropy and focal loss.[^1]
-- For a fixed feature and encoder, **Focal Loss** consistently beats cross-entropy, especially for long-tail classes like penalties and rare card events.[^1]
+- UGL unifies global environment features and local scene-entity features to produce a compact, interpretable per-frame representation that improves spotting precision.
+- State-of-the-art performance on SoccerNet‑v2: **69.38% T‑mAP** (Top‑1 on the leaderboard), outperforming E2E‑Spot by ~**2.65%** T‑mAP; consistent gains on FineDiving (+2.4% mAP) and FineGym (+1.3% mAP).[^1]
+- The Adaptive Attention Mechanism (AAM) effectively selects and fuses relevant detected entities, yielding notable improvements on small-object and long‑tail classes (e.g., penalty, red card, yellow‑to‑red).
+- For temporal modeling and imbalance handling, a 1-layer bidirectional GRU combined with Focal Loss provides strong, reliable performance across datasets.
 
-### 10.2 Contribution of Local Entities \& Fusion
+### 10.2 Conclusion and Implications
 
-- With the same GRU and loss, using the **fused feature** (global + local entities via UGL) yields:
-  - Higher T‑mAP than using global features alone.
-  - Noticeable improvements on long-tail classes such as “penalty”, “red card”, and “yellow-to-red card”.[^1]
+- UGL demonstrates that explicitly modeling and fusing entity-level and environment-level cues is an effective, interpretable strategy for precise action spotting in sports video.
+- The approach balances accuracy and efficiency: competitive with heavier two‑phase systems while remaining end‑to‑end and explainable via detected entities and attention maps.
+- Practical applications include automated highlight generation, broadcast assistance, and downstream retrieval; natural next steps are richer entity relationship modeling (e.g., GNNs) and hierarchical strategies for extreme class imbalance.[^1]
 
 ---
 
