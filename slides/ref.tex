@@ -6,9 +6,7 @@
 
 \usepackage{etex}
 \usepackage{graphicx}
-\usepackage{xcolor}
 \usepackage{hyperref}
-\usepackage{booktabs}
 \usepackage[utf8]{inputenc}
 \usepackage[ngerman, english]{babel}
 \usepackage[
@@ -17,39 +15,30 @@ style=ieee,
 sorting=none
 ]{biblatex}
 
-\title[Action Spotting with UGL]{Unifying Global and Local Features}
+\title[Action Spotting with UGL]
+{Unifying Global and Local Features}
 \subtitle{A Modern Approach to Sports Video Analysis}
 \author[Presenter]{Hieu Tran}
 \place{Amberg}
-\date{\selectlanguage{english}\today}
+\date{{\selectlanguage{english}\today}}
 
 \addbibresource{literature.bib}
 
 \begin{document}
 \maketitle
 
-\begin{frame}
+\frame{
 \frametitle{\textbf{Table of Content}}
 \setcounter{tocdepth}{1}
 \setbeamerfont{section in toc}{series=\bfseries}
 \setbeamertemplate{section in toc}[sections numbered]
 \tableofcontents
-\end{frame}
+}
 
 \section{Introduction}
 
 \begin{frame}
-\frametitle{1. Introduction}
-\framesubtitle{Task Overview}
-\includegraphics[width=0.95\textwidth,height=5.5cm]{images/intro.png}
-\vspace{0.25cm}
-\begin{flushright}
-\tiny\textcolor{gray}{Xu H, Baniya AA, Well S, Bouadjenek MR, Dazeley R, Aryal S. Deep Learning for Sports Video Event Detection: Tasks, Datasets, Methods, and Challenges. arXiv:2505.03991, 2025.}
-\end{flushright}
-\end{frame}
-
-\begin{frame}
-\frametitle{1. Introduction}
+\frametitle{Introduction}
 \framesubtitle{Task Overview}
 \begin{itemize}
 \item<1-> \structure{Domain}: Action spotting in sports videos (soccer, diving, gymnastics)
@@ -61,15 +50,10 @@ sorting=none
 	\item Downstream temporal retrieval
 	\end{itemize}
 \end{itemize}
-\includegraphics[width=0.55\textwidth,height=3.5cm]{images/intro.png}
-\vspace{0.1cm}
-\begin{flushright}
-\tiny\textcolor{gray}{Xu H, Baniya AA, Well S, Bouadjenek MR, Dazeley R, Aryal S. Deep Learning for Sports Video Event Detection: Tasks, Datasets, Methods, and Challenges.}
-\end{flushright}
 \end{frame}
 
 \begin{frame}
-\frametitle{1. Introduction}
+\frametitle{Introduction}
 \framesubtitle{Motivation for UGL}
 \begin{itemize}
 \item<1-> Standard pipelines rely on \structure{global frame features} only
@@ -86,17 +70,17 @@ sorting=none
 
 
 \begin{frame}
-\frametitle{2. UGL Architecture}
+\frametitle{UGL Architecture}
 \framesubtitle{Global Environment Feature}
 \centering
-\includegraphics[width=0.85\textwidth,height=5.5cm]{images/architect.png}
+\includegraphics[width=0.85\textwidth,height=6cm]{images/architect.png}
 \end{frame}
 
 
 \subsection{Global Environment Feature}
 
 \begin{frame}
-\frametitle{2. UGL Architecture}
+\frametitle{UGL Architecture}
 \framesubtitle{Global Environment Feature}
 \begin{itemize}
 \item<1-> \structure{Backbone}: RegNet-Y (efficient 2D CNN design)
@@ -109,13 +93,13 @@ sorting=none
 
 \item<3-> \structure{Output}: Global environment feature vector per frame capturing spatial and short-term temporal context
 \end{itemize}
-\includegraphics[height=3.5cm]{images/architect.png}
+\includegraphics[height=5.5cm]{images/architect.png}
 \end{frame}
 
 \subsection{Local Scene Entities}
 
 \begin{frame}
-\frametitle{2. UGL Architecture}
+\frametitle{UGL Architecture}
 \framesubtitle{Local Scene Entities with GLIP}
 \begin{block}{Why GLIP?}
 Global features alone often ignore small but crucial entities (cards, ball, etc.), especially under class imbalance
@@ -137,7 +121,7 @@ Global features alone often ignore small but crucial entities (cards, ball, etc.
 \end{frame}
 
 \begin{frame}
-\frametitle{2. UGL Architecture}
+\frametitle{UGL Architecture}
 \framesubtitle{Adaptive Attention Mechanism (AAM)}
 \begin{block}{Problem}
 Not all detected entities are equally relevant for the current action
@@ -157,13 +141,13 @@ Takes both local entity features and global environment feature:
 \end{frame}
 
 \begin{frame}
-\frametitle{2. UGL Architecture}
+\frametitle{UGL Architecture}
 \framesubtitle{Fusion of Global and Local}
 \includegraphics[height=6cm]{images/fusion.png}
 \end{frame}
 
 \begin{frame}
-\frametitle{2. UGL Architecture}
+\frametitle{UGL Architecture}
 \framesubtitle{Fusion of Global and Local}
 \begin{enumerate}
 \item<1-> \structure{Concatenate}:
@@ -178,40 +162,44 @@ Takes both local entity features and global environment feature:
 	\end{itemize}
 \item<3-> \structure{Output}: Unified entities and environment representation per frame capturing both background context and key object semantics
 \end{enumerate}
-\includegraphics[scale=0.25, keepaspectratio]{images/fusion.png}
+\includegraphics[height=6cm]{images/fusion.png}
 \end{frame}
 
 \subsection{Temporal Reasoning}
 
 \begin{frame}
-\frametitle{2. UGL Architecture}
+\frametitle{UGL Architecture}
 \framesubtitle{Long-Term Temporal Reasoning (LTR)}
 \centering
 \includegraphics[width=0.85\textwidth,height=6cm]{images/ltr.png}
 \end{frame}
 
 \begin{frame}
-	\frametitle{2. UGL Architecture}
-	\framesubtitle{Long-Term Temporal Reasoning (LTR)}
-	\begin{block}{Temporal Modeling}
-		\begin{itemize}
-			\item Input: Sequence of fused frame features for $T$-frame snippet
-			\item Model: 1-layer \textbf{bidirectional GRU} capturing semantic relationships
-			\item Prediction: Per-frame class scores via fully connected + softmax
-		\end{itemize}
-		\includegraphics[width=0.55\textwidth,height=3cm]{images/biGRU.jpg}
-		% Intelligent prediction of rail corrugation evolution trend based on self-attention bidirectional TCN and GRU
-		% Jian-Hua Liu, ... Wei-Wei Yang
-			\vspace{0.25cm}
-			\begin{flushright}
-			\tiny\textcolor{gray}{Liu JH, Yang WH, He J, Wang ZM, Jia L, Zhang CF, Yang WW. Intelligent prediction of rail corrugation evolution trend based on self-attention bidirectional TCN and GRU. Intell. Robot. 2024;4(4):318--338.}
-			\end{flushright}
+\frametitle{UGL Architecture}
+\framesubtitle{Long-Term Temporal Reasoning (LTR)}
+\begin{block}{Temporal Modeling}
+\begin{itemize}
+\item Input: Sequence of fused frame features for $T$-frame snippet
+\item Model: 1-layer bidirectional GRU capturing semantic relationships
+\item Prediction: Per-frame class scores via fully connected + softmax
+\end{itemize}
+\end{block}
+
+\begin{block}{Inference with Sliding Window}
+\begin{itemize}
+\item Slide window over entire video with overlap
+\item Merge frame-wise scores from GRU for each snippet
+\item Apply Non-Maximum Suppression (NMS) in time
+\item Output: Temporally precise event spots
+\end{itemize}
 \end{block}
 \end{frame}
 
+
 \section{Benchmark Datasets}
+
 \begin{frame}
-\frametitle{3. Benchmark Datasets}
+\frametitle{Benchmark Datasets}
 \framesubtitle{Three Sports Domains}
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -241,24 +229,62 @@ Takes both local entity features and global environment feature:
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Benchmark Datasets}
+\framesubtitle{Addressing Class Imbalance}
+\begin{block}{The Problem}
+In SoccerNet-v2: background frames dominate; non-background classes $\approx 2\%$ of frames
+\end{block}
+
+\begin{block}{Solution: Focal Loss}
+\begin{itemize}
+\item Down-weights easy examples with high predicted probability
+\item Focuses learning on hard, misclassified, or minority-class examples
+\item Includes balancing parameter for class weighting
+\item Applied per frame over predicted multi-class outputs
+\end{itemize}
+\end{block}
+\end{frame}
+
+
 	\section{Quantitative Results}
 \subsection{Evaluation Metrics}
 
 \begin{frame}
-\frametitle{4. Quantitative Results}
+\frametitle{Quantitative Results}
+\framesubtitle{Evaluation Metrics}
+\begin{block}{mAP}
+Mean Average Precision per class at fixed temporal tolerance
+\end{block}
+
+\begin{block}{Average-mAP (A-mAP)}
+Area under mAP vs tolerance curve across range of tolerances
+\end{block}
+
+\begin{block}{Tight Average-mAP (T-mAP)}
+Focuses on tight tolerances from 1 to 5 seconds, better reflects precise spotting capability
+\end{block}
+\end{frame}
+
+
+% --- Added frame with quantitative LaTeX tables (from paper-sumary.md section 9.3)
+\begin{frame}
+\frametitle{Quantitative Results (Tables)}
 \framesubtitle{SoccerNet-v2; FineDiving \& FineGym}
 
 \begin{table}[ht]
 \centering
-\caption{SoccerNet-v2 challenge quantitative comparison (T-mAP).}\label{tab:soccernet_results}
+\caption{SoccerNet-v2 challenge quantitative comparison (T-mAP).}
+\label{tab:soccernet_results}
 \begin{tabular}{lccc}
-\toprule
+\hline
 Method & T-mAP (\%) & Gap to UGL (\%) & Notes \\
-\midrule
-UGL (ours) & \textbf{69.38} & -- & current SOTA \\
-E2E-Spot & 66.73 & -2.65 & previous SOTA \\
-Soares (two-phase) & 67.81 & -1.57 & 1st 2022\\
-\bottomrule
+\hline
+UGL (ours) & 69.38 & 0.00 & Top-1 on challenge leaderboard \\
+E2E-Spot & 66.73 & -2.65 & End-to-end baseline \\
+Baidu (two-phase) & 49.56 & -19.82 & Computed from reported margin \\
+Soares (two-phase) & 67.81 & -1.57 & Computed from reported margin \\
+\hline
 \end{tabular}
 \end{table}
 
@@ -266,14 +292,15 @@ Soares (two-phase) & 67.81 & -1.57 & 1st 2022\\
 
 \begin{table}[ht]
 \centering
-\caption{FineDiving and FineGym improvements of UGL over E2E-Spot (no optical flow).}\label{tab:finediving_finegym_results}
+\caption{FineDiving and FineGym improvements of UGL over E2E-Spot (no optical flow).}
+\label{tab:finediving_finegym_results}
 \begin{tabular}{lcc}
-\toprule
-Dataset & $\Delta$ mAP (Gap to E2E-Spot) (\%) \\
-\midrule
-FineDiving & 87.7 (+2.4) \\
-FineGym & 67.8 (+1.3) \\
-\bottomrule
+\hline
+Dataset & $\Delta$ mAP of UGL (\%) & Comment \\
+\hline
+FineDiving & +2.4 & At selected temporal tolerances \\
+FineGym & +1.3 & Consistent gain over baseline \\
+\hline
 \end{tabular}
 \end{table}
 
@@ -282,20 +309,19 @@ FineGym & 67.8 (+1.3) \\
 \section{Conclusion}
 
 \begin{frame}
-\frametitle{5. Conclusion}
+\frametitle{Conclusion}
 \begin{itemize}
-	\item Global + Local entity features to produce precise, interpretable per-frame representations
-	\item Top result on SoccerNet‑v2: \textbf{69.38\% T‑mAP} 
-	\item GRU + Focal Loss handles temporal reasoning and class imbalance effectively
+	\item UGL unifies global environment and local entity features to produce precise, interpretable per-frame representations
+	\item Top result on SoccerNet‑v2: \textbf{69.38\% T‑mAP} (Top‑1); +2.65\% vs E2E‑Spot
+	\item Consistent gains on FineDiving (+2.4\% mAP) and FineGym (+1.3\% mAP)
+	\item Adaptive Attention selects relevant entities; GRU + Focal Loss handles temporal reasoning and class imbalance effectively
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\centering
-\vfill
-{\LARGE Thank you for listening!}\\[1em]
-{\large Questions are welcome}
-\vfill
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\framesubtitle{Literature References}
+\printbibliography%
 \end{frame}
 
 \end{document}
