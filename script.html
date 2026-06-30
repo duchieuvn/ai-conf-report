@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>20-Minute Speech Script - Unifying Global and Local Features</title>
+    <style>
+      :root {
+        --bg: #f7f7f4;
+        --panel: #ffffff;
+        --text: #1f2328;
+        --muted: #5f6b7a;
+        --accent: #c76b1e;
+        --accent2: #2f6f8f;
+        --border: #dde3e8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        background: linear-gradient(180deg, #fbfaf7 0%, var(--bg) 100%);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 20px 56px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f1e8 100%);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(31, 35, 40, 0.06);
+        margin-bottom: 22px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 2rem;
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        margin: 0;
+        font-size: 1.02rem;
+        color: var(--muted);
+      }
+
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .chip {
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(199, 107, 30, 0.08);
+        border: 1px solid rgba(199, 107, 30, 0.18);
+        color: #5f3811;
+        font-size: 0.95rem;
+      }
+
+      .section {
+        margin-top: 18px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 22px 22px 18px;
+        box-shadow: 0 8px 18px rgba(31, 35, 40, 0.04);
+      }
+
+      .section h2 {
+        margin: 0 0 8px;
+        font-size: 1.25rem;
+        color: var(--accent2);
+      }
+
+      .time {
+        display: inline-block;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: bold;
+      }
+
+      p {
+        margin: 0 0 12px;
+      }
+
+      ul {
+        margin: 0 0 12px 20px;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 6px;
+      }
+
+      .note {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-left: 4px solid var(--accent);
+        background: #fff8f1;
+        color: #6a3d12;
+        border-radius: 8px;
+        font-size: 0.96rem;
+      }
+
+      .closing {
+        border-color: rgba(47, 111, 143, 0.18);
+        background: linear-gradient(135deg, #ffffff 0%, #f1f7fb 100%);
+      }
+
+      .small {
+        font-size: 0.93rem;
+        color: var(--muted);
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+        .wrap {
+          max-width: none;
+          padding: 0;
+        }
+        .hero,
+        .section {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <h1>20-Minute Speech Script</h1>
+        <p class="subtitle">
+          Unifying Global and Local Features for Precise Action Spotting
+        </p>
+        <div class="meta">
+          <div class="chip"><strong>Total time:</strong> ~20 minutes</div>
+          <div class="chip">
+            <strong>Style:</strong> Natural, conversational slide-by-slide notes
+          </div>
+          <div class="chip">
+            <strong>Focus:</strong> Perfect alignment with slide keywords
+          </div>
+          <div class="chip"><strong>Use:</strong> Read aloud smoothly at a moderate pace</div>
+        </div>
+      </header>
+
+      <section class="section">
+        <h2>1. Table of Content and Task Overview (Slides 1 & 2)</h2>
+        <div class="time">Estimated time: 2 minutes</div>
+        <p>Good morning, everyone, and thank you for being here. Today, I am excited to present my work titled <strong>Unifying Global and Local Features</strong>, or UGL for short. We are introducing a modern approach to sports video analysis.</p>
+        <p>To give you a quick overview of our task, we are focusing on the <strong>domain</strong> of action spotting within sports videos—specifically looking at complex, fast-paced sports like <strong>soccer, diving, and gymnastics</strong>. Unlike traditional action recognition, where the goal might be to classify a long temporal segment, our <strong>goal</strong> is much more precise. We want to detect the exact, <strong>precise timestamps</strong> of events, <strong>not long temporal segments</strong>. We are looking for the singular moment—the exact frame—when a specific action occurs.</p>
+        <p>Why is this important? The real-world <strong>applications</strong> are vast. This technology is the backbone for automatic <strong>highlight generation</strong>, deep <strong>video analytics and broadcasting automation</strong>, and <strong>downstream temporal retrieval</strong>. It allows broadcasters to instantly pull up key moments without manually scrubbing through hours of footage.</p>
+      </section>
+
+      <section class="section">
+        <h2>2. Motivation for UGL (Slide 3)</h2>
+        <div class="time">Estimated time: 3 minutes</div>
+        <p>Let's move on to the motivation for developing UGL. If we look at standard action spotting pipelines today, we notice a common limitation: they rely almost entirely on <strong>global frame features</strong> only. They process the video frame as a whole, treating the scene essentially as <strong>black boxes</strong>. The problem with this approach is that the models are completely <strong>missing small but critical entities</strong> in the scene. In a soccer match, for instance, the difference between a foul and a regular play might depend entirely on a tiny object like the ball, a referee's whistle, or a red or yellow card.</p>
+        <p>When we review the current literature, we see two main directions, both with significant drawbacks. First, there are <strong>two-phase approaches</strong>. These use <strong>heavy 3D backbones</strong> and <strong>multiple extractors</strong>. While accurate, they are incredibly computationally expensive and complex to deploy. Second, we have <strong>end-to-end methods</strong>, such as <strong>E2E-Spot</strong>. These are <strong>lighter but still global-only</strong>—they lack the fine-grained understanding of local entities. Our motivation with UGL was to bridge this gap: to build a model that is lightweight like an end-to-end method, but highly perceptive of critical local details.</p>
+      </section>
+
+      <section class="section">
+        <h2>3. Global Environment Feature (Slides 4 & 5)</h2>
+        <div class="time">Estimated time: 3 minutes</div>
+        <p>Let's dive into the UGL Architecture, starting with how we capture the overall scene. We call this the <strong>Global Environment Feature</strong>. For our <strong>backbone</strong>, we chose <strong>RegNet-Y</strong>. This is an efficient <strong>2D CNN design</strong> that gives us excellent spatial feature extraction without the immense overhead of a 3D CNN.</p>
+        <p>However, since we are working with video, we still need to understand how the scene changes over time. For our <strong>Temporal Integration</strong>, we incorporate the <strong>Gate-Shift Module</strong>, or <strong>GSM</strong>. What the GSM does is remarkably efficient: it <strong>shifts feature maps forward and backward along the temporal axis</strong>. This allows neighboring frames to naturally <strong>share information</strong> with one another. It serves as a highly effective, <strong>lightweight alternative to 3D CNNs</strong>.</p>
+        <p>The <strong>output</strong> of this branch is a single <strong>global environment feature vector per frame</strong>. This vector successfully <strong>captures spatial and short-term temporal context</strong> of the players' immediate movements.</p>
+      </section>
+
+      <section class="section">
+        <h2>4. Local Scene Entities with GLIP (Slide 6)</h2>
+        <div class="time">Estimated time: 4 minutes</div>
+        <p>But as I mentioned earlier, the global environment is only half the story. We also need to understand the specifics. This brings us to the <strong>Local Scene Entities</strong> branch. Why do we need this? Because global features alone often ignore small but crucial entities, especially under severe class imbalance.</p>
+        <p>To solve this, we leverage <strong>GLIP</strong>, which stands for <strong>Grounded Language-Image Pre-training</strong>. The beauty of GLIP is that it acts as a robust, <strong>training-free detector</strong>. The <strong>input</strong> to GLIP is twofold: the raw frame image, and a specific <strong>text prompt listing sports entities</strong>—for example, we feed it the words <strong>"ball, yellow card, red card, referee"</strong>.</p>
+        <p>Internally, GLIP's <strong>mechanism</strong> is fascinating. A <strong>Language encoder processes the text</strong> using BERT. Meanwhile, a <strong>Visual encoder produces image proposals</strong> using a Swin backbone. Finally, a <strong>Cross-modal multi-head attention aligns the proposals with the textual entities</strong>, effectively locating the key objects in the scene based purely on our text prompt.</p>
+      </section>
+
+      <section class="section">
+        <h2>5. Adaptive Attention Mechanism (Slide 7)</h2>
+        <div class="time">Estimated time: 2 minutes</div>
+        <p>Now, GLIP might find many objects, but we have a new <strong>problem: not all detected entities are equally relevant</strong> for the current action. A referee standing idle on the sideline is less important than a referee actively pulling out a red card.</p>
+        <p>To filter this information, we designed the <strong>Adaptive Attention Mechanism</strong>, or <strong>AAM</strong>. The AAM solution takes both the local entity features and our global environment feature, and applies a two-step refinement. First, it uses <strong>Hard attention</strong> to actively <strong>select the most promising entities</strong>. Second, it applies <strong>Soft self-attention</strong> to <strong>fuse them into a single compact representation</strong>.</p>
+        <p>The <strong>output</strong> of this module is the <strong>Local relevant scene entities feature</strong>. This feature perfectly <strong>emphasizes objects crucial for the action</strong> taking place.</p>
+      </section>
+
+      <section class="section">
+        <h2>6. Fusion of Global and Local (Slides 8 & 9)</h2>
+        <div class="time">Estimated time: 2 minutes</div>
+        <p>With our global context and our refined local details in hand, we reach the Fusion stage. Our goal here is to create a unified understanding of the frame.</p>
+        <p>The process is straightforward but powerful. First, we <strong>Concatenate</strong> the <strong>Global environment feature</strong> and the <strong>Local relevant entities feature</strong>. Once combined, we <strong>Apply</strong> a <strong>Self-attention layer to model interactions</strong> between the environment and the objects, followed by <strong>Average pooling for compactness</strong>.</p>
+        <p>The final <strong>Output</strong> is a <strong>Unified entities and environment representation per frame</strong>. This representation is the core strength of UGL—it explicitly <strong>captures both background context and key object semantics</strong> simultaneously.</p>
+      </section>
+
+      <section class="section">
+        <h2>7. Long-Term Temporal Reasoning (LTR) (Slides 10 & 11)</h2>
+        <div class="time">Estimated time: 2 minutes</div>
+        <p>Having built this rich per-frame representation, we now need to look at the longer-term sequence of events to make our final prediction. We do this in our <strong>Long-Term Temporal Reasoning</strong> module, or LTR.</p>
+        <p>For our <strong>Temporal Modeling</strong>, we take the sequence of fused frame features for a <strong>T-frame snippet</strong> as our input. We feed this sequence into our model, which is a <strong>1-layer bidirectional GRU</strong>. The bidirectional nature of the GRU is essential here, as it effectively <strong>captures semantic relationships</strong> of actions across time.</p>
+        <p>Finally, for our <strong>Prediction</strong>, we generate <strong>per-frame class scores via a fully connected layer and softmax</strong>, giving us our precise action timestamps.</p>
+      </section>
+
+      <section class="section">
+        <h2>8. Benchmark Datasets (Slide 12)</h2>
+        <div class="time">Estimated time: 1 minute</div>
+        <p>To prove the effectiveness of UGL, we rigorously tested it across three distinct benchmark datasets representing different sports domains.</p>
+        <p>The most significant is <strong>SoccerNet-v2</strong>. This is a massive dataset containing <strong>~550 matches</strong>, roughly <strong>~764 hours of video</strong>, and <strong>>300k labeled spots</strong>. It is incredibly challenging due to <strong>strong clutter and camera changes</strong>.</p>
+        <p>We also evaluated on <strong>FineDiving</strong>, which contains <strong>3,000 diving clips</strong> focusing on complex <strong>phase transitions (entry, twist, etc.)</strong>, and <strong>FineGym</strong>, which offers <strong>5,374 gym performances</strong> across <strong>32 spotting classes</strong> that have been <strong>converted from action segments to timestamps</strong>.</p>
+      </section>
+
+      <section class="section">
+        <h2>9. Quantitative Results (Slide 13)</h2>
+        <div class="time">Estimated time: 1.5 minutes</div>
+        <p>Our quantitative results clearly demonstrate the superiority of the UGL architecture. Let's look at the SoccerNet-v2 challenge.</p>
+        <p>UGL achieves a Tight Average mAP, or <strong>T-mAP</strong>, of <strong>69.38%</strong>. This establishes the <strong>current SOTA</strong> on this highly competitive benchmark. When we compare this to the <strong>previous SOTA, E2E-Spot</strong>, which achieved 66.73%, we achieve a massive performance gap of <strong>-2.65%</strong> for them, or +2.65% for us. We even outperform the leading two-phase approach by <strong>Soares</strong> by 1.57%.</p>
+        <p>We see similar success on our other datasets. On FineDiving, UGL shows a <strong>+2.4%</strong> improvement in mAP over E2E-Spot, and on FineGym, we see a <strong>+1.3%</strong> improvement. These consistent gains validate our approach.</p>
+      </section>
+
+      <section class="section closing">
+        <h2>10. Conclusion (Slides 14 & 15)</h2>
+        <div class="time">Estimated time: 1.5 minutes</div>
+        <p>To conclude, our work demonstrates that unifying <strong>Global + Local entity features</strong> produces highly <strong>precise, interpretable per-frame representations</strong>.</p>
+        <p>This architecture achieved the <strong>top result on SoccerNet-v2: 69.38% T-mAP</strong>. Furthermore, combining our unified features with a <strong>GRU + Focal Loss handles temporal reasoning and class imbalance effectively</strong>.</p>
+        <p>Thank you very much for your time and attention today. I would now be happy to open the floor to any questions.</p>
+      </section>
+      
+      <section class="section">
+        <h2>Appendix Backup Notes (Slides 16-18)</h2>
+        <div class="time">Optional reading if asked during Q&A</div>
+        <ul>
+          <li><strong>Gate-Shift Module (GSM):</strong> Used to add short-term temporal context without heavy 3D CNNs by shifting feature maps.</li>
+          <li><strong>RoIAlign in GLIP:</strong> Turns detected boxes of varying sizes (like a small ball vs. a large referee) into a fixed-size feature map for fair comparison.</li>
+          <li><strong>AAM specifics:</strong> Reiterate that Hard attention selects promising entities from GLIP, while Soft self-attention fuses them to emphasize only what matters for spotting.</li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>

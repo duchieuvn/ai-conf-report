@@ -76,7 +76,6 @@ sorting=none
 \item<2-> Current methods behave as black boxes, missing small but critical entities
 \item<3-> Two-phase approaches: heavy 3D backbones, multiple extractors
 \item<4-> End-to-end methods (e.g., E2E-Spot): lighter but still global-only
-\item<5-> \alert{Need}: explicit modeling of both global and local scene elements
 \end{itemize}
 \end{frame}
 
@@ -89,7 +88,7 @@ sorting=none
 \frametitle{2. UGL Architecture}
 \framesubtitle{Global Environment Feature}
 \centering
-\includegraphics[width=0.85\textwidth,height=5.5cm]{images/architect.png}
+\includegraphics[width=1\textwidth,height=5.5cm]{images/architect.png}
 \end{frame}
 
 
@@ -296,6 +295,43 @@ FineGym & 67.8 (+1.3) \\
 {\LARGE Thank you for listening!}\\[1em]
 {\large Questions are welcome}
 \vfill
+\end{frame}
+
+\appendix
+
+\section{Appendix}
+
+\begin{frame}
+\frametitle{Appendix }
+\framesubtitle{A. Gate-Shift Module}
+\begin{itemize}
+\item \structure{Purpose}: add short-term temporal context to the global branch without using a heavy 3D CNN
+\item \structure{GSM}: shifts feature maps forward and backward along the temporal axis
+\item \structure{Output}: one global environment feature vector per frame that captures spatial context and neighbor-frame information
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Appendix }
+\framesubtitle{B. RoIAlign in GLIP}
+\begin{itemize}
+\item \structure{Input}: one video frame and a text prompt such as ``ball, yellow card, red card, referee''
+\item \structure{GLIP}: finds possible object locations by matching the words with what it sees in the image
+\item \structure{RoIAlign}: turns each detected box into the same fixed-size feature map, like cutting out each object and resizing it so the network can compare them fairly
+\item \structure{Why it matters}: the ball may be small, while a player or referee may be larger, but RoIAlign keeps the important details from each box
+\item \structure{Output}: a set of candidate entity features that the local scene entities branch can use later
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Appendix}
+\framesubtitle{C. Adaptive Attention Mechanism (AAM)}
+\begin{itemize}
+\item \structure{Problem}: not every detected entity is relevant for the current action
+\item \structure{Hard attention}: selects the most promising entities from the GLIP proposals
+\item \structure{Soft self-attention}: fuses the selected entities into a compact local relevant scene entities feature
+\item \structure{Goal}: emphasize the ball, cards, referee, or other key objects that matter for spotting
+\end{itemize}
 \end{frame}
 
 \end{document}
